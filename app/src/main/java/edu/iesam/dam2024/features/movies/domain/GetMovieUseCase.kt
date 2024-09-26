@@ -1,10 +1,9 @@
-package edu.iesam.dam2024.features.movies.domain
+package edu.iesam.dam2024.features.movies.domain;
 
+public class GetMovieUseCase (private val movieRepository: MovieRepository) {
 
-class GetMovieUseCase (private val movieRepository: MovieRepository){
-
-    operator fun invoke() : List<Movie>{
-        return movieRepository.getMovies()
+    operator fun invoke(movieId: String) : Movie?{
+        return movieRepository.getMovie(movieId)
     }
 
 }

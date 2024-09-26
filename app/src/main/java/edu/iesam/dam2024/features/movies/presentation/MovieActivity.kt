@@ -2,34 +2,48 @@ package edu.iesam.dam2024.features.movies.presentation
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import edu.iesam.dam2024.R
-import edu.iesam.dam2024.features.movies.data.MovieDataRepository
-import edu.iesam.dam2024.features.movies.data.remote.MovieMockRemoteDataSource
-import edu.iesam.dam2024.features.movies.domain.GetMovieUseCase
+import edu.iesam.dam2024.features.movies.domain.Movie
 
 class MovieActivity : AppCompatActivity() {
 
-    private val movieFactory : MovieFactory = MovieFactory()
-
+    private val moviewFactory: MovieFactory = MovieFactory()
+    private val viewModel = moviewFactory.buildViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val viewModel = movieFactory.buildModel
+
         val movies = viewModel.viewCreated()
-        Log.d("@dev",movies.toString())
+        bindData(movies)
+
+        viewModel.itemSelected(movies.first().id) //Simular un click sobre un item
     }
 
-    override fun onStart(){
-        super.onStart()
-    }
+    private fun bindData(movies: List<Movie>) {
+        findViewById<TextView>(R.id.movie_id_1).text = movies[0].id
+        findViewById<TextView>(R.id.movie_title_1).text = movies[0].title
 
-    override fun onResume(){
-        super.onResume()
+        findViewById<LinearLayout>(R.id.layout_1).setOnClickListener {
+            val movie1: Movie? = viewModel.itemSelected(movies[0].id)
+            movie1?.let {
+                Log.d("@dev", "Pelicula seleccionada: ${it.title}")
+            }
+        }
+
+        findViewById<TextView>(R.id.movie_id_2).text = movies[1].id
+        findViewById<TextView>(R.id.movie_title_2).text = movies[1].title
+
+        findViewById<TextView>(R.id.movie_id_3).text = movies[2].id
+        findViewById<TextView>(R.id.movie_title_3).text = movies[2].title
+
+        findViewById<TextView>(R.id.movie_id_4).text = movies[3].id
+        findViewById<TextView>(R.id.movie_title_4).text = movies[3].title
+
+
     }
 
 }
